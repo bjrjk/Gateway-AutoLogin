@@ -4,6 +4,15 @@ import requests, json, hmac, hashlib
 
 session = requests.session()
 
+ip_response = session.get("https://gw.ict.ac.cn/cgi-bin/rad_user_info?callback=c")
+ip_response_json = json.loads(ip_response.text[2:-1])
+
+IP = "0.0.0.0"
+if 'client_ip' in ip_response_json:
+    IP = ip_response_json['client_ip']
+elif 'online_ip' in ip_response_json:
+    IP = ip_response_json['online_ip']
+
 challenge_param = {
     "callback": "j",
     "username": USERNAME,
